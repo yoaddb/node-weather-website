@@ -7,6 +7,8 @@ const weather = require("./Utils/weather");
 
 const app = express();
 
+const port = process.env.PORT || 3001;
+
 // Define paths for Express config
 const publicDirectoryPath = path.join(__dirname, "../public");
 const viewsPath = path.join(__dirname, "../templates/views");
@@ -56,29 +58,32 @@ const response = app.get("/weather", (req, res) => {
       error: "You must provide an address"
     });
 
-  geocode(req.query.address, (error, { longitude, latitude, location } = {}) => {
-    if (error) return res.send({ error });
-
-    weather(longitude, latitude, (error, forecast) => {
+  geocode(
+    req.query.address,
+    (error, { longitude, latitude, location } = {}) => {
       if (error) return res.send({ error });
 
-      return res.send({
-        forecast,
-        location,
-        address: req.query.address
+      weather(longitude, latitude, (error, forecast) => {
+        if (error) return res.send({ error });
+
+        return res.send({
+          forecast,
+          location,
+          address: req.query.address
+        });
       });
-    });
-  });
+    }
+  );
 });
 
 app.get("*", (req, res) => {
   res.render("pageNotFound");
 });
 
-app.listen(3001, () => {
-  console.log("Server is up on port 3001.");
+app.listen(port, () => {
+  console.log("Server is up on port " + port);
 });
 
 module.exports = {
   response
-}
+};
