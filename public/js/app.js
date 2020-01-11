@@ -1,6 +1,6 @@
 const form = document.querySelector("form");
 const input = document.querySelector("input");
-const loc = document.querySelector("#location");
+const loc = document.querySelector("#loc");
 const forecast = document.querySelector("#forecast");
 
 form.addEventListener("submit", e => {
